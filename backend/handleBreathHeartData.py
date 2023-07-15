@@ -93,8 +93,7 @@ class handleBreathHeartData:
                     elif row[0] == "time":
                         for _ in range(current_time_cnt-1):
                             time = datetime.now()+timedelta(hours=8)
-                            row.append(" ")
-                        row.append(time.strftime('%m/%d/%Y %H:%M:%S'))
+                            row.append(time.strftime('%m/%d %H:%M'))
                         self.time_dict[cnt] = row
                         cnt += 1
 
@@ -119,7 +118,7 @@ class handleBreathHeartData:
                     for _ in range(current_time_cnt-1):
                         time = datetime.now()+timedelta(hours=8)
                         row.append(" ")
-                    row.append(time.strftime('%m/%d/%Y %H:%M:%S'))
+                    row.append(time.strftime('%m/%d %H:%M'))
                     self.time_dict[cnt] = row
                     cnt += 1
         if change_file:
