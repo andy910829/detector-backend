@@ -28,13 +28,13 @@ class handleBreathHeartData:
         }
         self.id = str()
         self.csv_file = str()
-        self.folder_file = "../var/www/detectorData/"
+        self.folder_path = "/var/www/detectorData/"
         self.cnt = 0
 
     def execute(self, data, id, dataLen):
         self.cnt += 1
         self.id = id
-        dir_path = f"{self.folder_file+str(self.id)}"
+        dir_path = f"{self.folder_path+str(self.id)}"
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path)
         board_info = self.collection.find_one({"board_id": self.id})
@@ -42,9 +42,9 @@ class handleBreathHeartData:
             self.csv_file = board_info["current_csv_file"]
         else:
             file_name = uuid.uuid4()
-            self.collection.insert_one({"board_id": self.id, "current_csv_file": self.folder_file+str(self.id)+"/"+str(
-                file_name)+".csv", "CSV_list": [self.folder_file+str(self.id)+"/"+str(file_name)+".csv"]})
-            self.csv_file = self.folder_file + \
+            self.collection.insert_one({"board_id": self.id, "current_csv_file": self.folder_path+str(self.id)+"/"+str(
+                file_name)+".csv", "CSV_list": [self.folder_path+str(self.id)+"/"+str(file_name)+".csv"]})
+            self.csv_file = self.folder_path + \
                 str(self.id)+"/"+str(file_name)+".csv"
         data_type = data[0]
         try:
@@ -91,9 +91,10 @@ class handleBreathHeartData:
                         current_time_cnt = len(newdata)
                         self.data_dict[str(row[0])] = row+newdata
                     elif row[0] == "time":
-                        for _ in range(current_time_cnt):
+                        for _ in range(current_time_cnt-1):
                             time = datetime.now()+timedelta(hours=8)
-                            row.append(time.strftime('%m/%d/%Y %H:%M:%S'))
+                            row.append(" ")
+                        row.append(time.strftime('%m/%d/%Y %H:%M:%S'))
                         self.time_dict[cnt] = row
                         cnt += 1
 
@@ -115,9 +116,10 @@ class handleBreathHeartData:
                     current_time_cnt = len(newdata)
                     self.data_dict[str(row[0])] = row+newdata
                 elif row[0] == "time":
-                    for _ in range(current_time_cnt):
+                    for _ in range(current_time_cnt-1):
                         time = datetime.now()+timedelta(hours=8)
-                        row.append(time.strftime('%m/%d/%Y %H:%M:%S'))
+                        row.append(" ")
+                    row.append(time.strftime('%m/%d/%Y %H:%M:%S'))
                     self.time_dict[cnt] = row
                     cnt += 1
         if change_file:
@@ -128,7 +130,7 @@ class handleBreathHeartData:
             data_list.clear()
 
     def create_new_CSVfile(self):
-        file_name = self.folder_file+str(self.id)+"/"+str(uuid.uuid4())+".csv"
+        file_name = self.folder_path+str(self.id)+"/"+str(uuid.uuid4())+".csv"
         self.collection.update_many({"board_id": self.id}, {
                                     "$set": {"current_csv_file": file_name}, "$push": {"CSV_list": file_name}})
 
