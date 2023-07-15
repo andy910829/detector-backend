@@ -96,7 +96,7 @@ class handleExistData:
                         current_time_cnt = len(newdata)
                         self.data_dict[str(row[0])] = row+newdata
                     elif row[0] == "time":
-                        for _ in range(current_time_cnt-1):
+                        for _ in range(current_time_cnt):
                             time = datetime.now()+timedelta(hours=8)
                             row.append(time.strftime('%m/%d %H:%M'))
                         self.time_dict[cnt] = row
@@ -120,7 +120,7 @@ class handleExistData:
                     current_time_cnt = len(newdata)
                     self.data_dict[str(row[0])] = row+newdata
                 elif row[0] == "time":
-                    for _ in range(current_time_cnt-1):
+                    for _ in range(current_time_cnt):
                         time = datetime.now()+timedelta(hours=8)
                         row.append(time.strftime('%m/%d %H:%M'))
                     self.time_dict[cnt] = row
