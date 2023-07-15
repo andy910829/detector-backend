@@ -70,10 +70,11 @@ class handleExistData:
         self.swap()
         with open(self.csv_file, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
+            cnt = 0
             for data in self.data_dict.values():
-                # print(data)
                 csv_writer.writerow(data)
-                csv_writer.writerow(str(datetime.now()+timedelta(hours=8)))
+                csv_writer.writerow(self.time_dict[cnt])
+                cnt += 1
 
     def swap(self):
         try:
